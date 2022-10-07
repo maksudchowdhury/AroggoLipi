@@ -1,0 +1,270 @@
+{% load static %}
+{% static "" as baseUrl %}
+{% static "images" as images %}
+{% static "css" as css %}
+{% static "fonts" as fonts %}
+{% static "js" as js %}
+{% static "js" as js %}
+{% static "patientsUploadedImage" as patientsUploadedImage %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Login</title>
+
+
+    <link href="{{css}}/bootstrap.min.css" rel="stylesheet">
+
+    <link href="{{css}}/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-light bg-light justify-content-between">
+                    <a class="navbar-brand">Patient's Panel</a>
+
+                    <button class="btn btn-primary" onclick="window.print()">Print Page</button>
+
+
+                    <form class="form-inline" action="{% url 'userLoginPage'%}">
+                        <button class="btn btn-outline-primary" type="submit">Logout</button>
+                    </form>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <h4 class="text-center text-primary mt-3 mb-5">
+
+                </h4>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-4 mb-auto text-center">
+                        <img alt="Bootstrap Image Preview" src="{{ patientsUploadedImage }}/{{ patientImageFileName }}"
+                            class="rounded-circle" style="height: 150px; width:150px; object-fit: cover" />
+                    </div>
+                    <div class="col-md-8">
+                        <dl>
+                            <dt>
+                                Patient Details
+                            </dt>
+                            <dd>
+                                Name: {{ patientDetails.patientName }}
+                                <br>
+                                NID: {{ patientDetails.patientNID }}
+                                <br>
+                                Phone: {{ patientDetails.patientPhone }}
+                                <br>
+                                Email: {{ patientDetails.patientEmail }}
+                                <br>
+
+
+                            </dd>
+
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div class="col-md-12">
+
+
+
+            <div class="row d-flex justify-content-center">
+                <h6>Visiting Date: {{ visitingDate }}</h6>
+            </div>
+
+            <div class="row d-flex">
+                <table class="table mt-2">
+                    <tbody>
+                        <tr class="table-primary">
+                            <th>Health Status</th>
+
+                        </tr>
+
+                        {% for h in currentStatus %}
+                        <tr>
+                            <td>
+                                <ul class="m-0">
+                                    <li class="m-0">BP : {{ h.bloodPressure}}</li>
+                                    <li class="m-0">Pulse : {{ h.pulse}}</li>
+                                    <li class="m-0">Temperature : {{ h.temperature}}º F</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="row d-flex">
+                <table class="table mt-2">
+                    <tbody>
+                        <tr class="table-primary">
+                            <th>Complains</th>
+
+                        </tr>
+                        {% for c in complain %}
+                        <tr>
+                            <td>
+                                <ul class="m-0">
+                                    <li class="m-0">{{ c.complain }}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="row d-flex">
+                <table class="table mt-2">
+                    <tbody>
+                        <tr class="table-primary">
+                            <th>Diagnosis</th>
+
+                        </tr>
+                        {% for d in diagnosis %}
+                        <tr>
+                            <td>{{ d.diagnosis }}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+
+
+
+
+
+            <div class="row d-flex">
+                <table class="table mt-2">
+                    <tbody>
+                        <tr class="table-primary">
+                            <th>Medicine</th>
+                            <th>dose-1</th>
+                            <th>dose-2</th>
+                            <th>dose-3</th>
+                            <th>Duration (days)</th>
+
+                        </tr>
+
+                        {% for m in medicine %}
+                        <tr>
+                            <td>{{ m.medicineName }}</td>
+                            <td>{{ m.dose1 }}</td>
+                            <td>{{ m.dose2 }}</td>
+                            <td>{{ m.dose3 }}</td>
+                            <td>{{ m.duration }}</td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+
+
+
+            <div class="row d-flex">
+                <table class="table mt-2">
+                    <tbody>
+                        <tr class="table-primary">
+                            <th>Tests</th>
+                        </tr>
+
+                        {% for t in patientDiagTest %}
+                        <tr>
+                            <td>
+                                <ul class="m-0">
+                                    <li class="m-0">{{ t.diagTest }}</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+
+            <div class="row d-flex">
+                <table class="table mt-2">
+                    <tbody>
+                        <tr class="table-primary">
+                            <th>Instructions</th>
+
+                        </tr>
+                        {% for i in instruction %}
+                        <tr>
+                            <td>
+
+                                <li class="m-0">{{ i.instruction }}</li>
+
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </div>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <!-- 
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script> -->
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+</body>
+
+</html>

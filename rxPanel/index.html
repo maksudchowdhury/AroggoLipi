@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>RxPanel</title>
+
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+	<style>
+
+	</style>
+</head>
+
+<body>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<nav class="navbar navbar-expand-lg navbar-light bg-light text-center">
+
+					<a class="navbar-brand" href="#">RxPanel</a>
+
+					<button class="btn btn-primary my-2 my-sm-0" type="submit">
+						Logout
+					</button>
+
+				</nav>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-8 justify-content-center">
+				<form role="form" class="text-center">
+					<div class="input-group mt-5">
+
+						<input type="text" placeholder="Patient ID" class="form-control" name="patientId">
+						<input type="date" class="form-control" id="visitingDate" placeholder="Date"
+							name="visitingDate">
+
+						<button type="submit" class="btn btn-primary ">
+							Add Patient
+						</button>
+					</div>
+
+
+				</form>
+			</div>
+			<div class="col-sm-2">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 d-flex justify-content-center p-5">
+				<img alt="Bootstrap Image Preview" src="https://www.layoutit.com/img/sports-q-c-140-140-3.jpg"
+					class="rounded-circle mt-5" id="patientImage">
+			</div>
+			<div class="col-md-8 mt-5">
+
+
+
+				<dl>
+					<dt>
+						Description lists
+					</dt>
+					<dd>
+						A description list is perfect for defining terms.
+					</dd>
+					<dt>
+						Euismod
+					</dt>
+					<dd>
+						Vestibulum id ligula porta felis euismod semper eget lacinia odio sem nec elit.
+					</dd>
+					<dd>
+						Donec id elit non mi porta gravida at eget metus.
+					</dd>
+					<dt>
+						Malesuada porta
+					</dt>
+					<dd>
+						Etiam porta sem malesuada magna mollis euismod.
+					</dd>
+					<dt>
+						Felis euismod semper eget lacinia
+					</dt>
+					<dd>
+						Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa
+						justo sit amet risus.
+					</dd>
+				</dl>
+			</div>
+		</div>
+
+		<hr>
+		<h5 class="text-center">Current Status</h5>
+		<div class="row d-flex justify-content-center">
+			<div class="col-md-2">
+			</div>
+			<div class="col-md-8 text-center">
+				<form role="form ">
+					<div class="input-group">
+
+
+						<input placeholder="Blood Pressure" type="text" class="form-control mt-2" id="bp" name="bp">
+						<input placeholder="Temperature" type="text" class="form-control mt-2" id="temp" name="temp">
+						<input placeholder="Pulse" type="text" class="form-control mt-2" id="pulse" name="pulse">
+						<button type="submit" class="btn btn-primary mt-2">
+							Add
+						</button>
+					</div>
+
+
+				</form>
+			</div>
+			<div class="col-md-2">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6 complainBox b-5">
+				<h5 class="mt-5 text-center">
+					Chief Complain
+				</h5>
+				<form role="form">
+					<div class="input-group">
+
+						<input type="text" placeholder="Complain" class="form-control" id="chief complain">
+						<button type="submit" class="btn btn-primary">
+							Add
+						</button>
+					</div>
+
+
+				</form>
+				<div class="row">
+					<div class="col-md-12">
+						<ol class="mt-2 inline">
+							<li>First complain</li><a href="#" onclick="remove()">remove</a>
+							<li>Second complain</li>
+							<li>Third complain</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<h5 class="mt-5 text-center">
+					Diagnosis
+				</h5>
+				<form role="form">
+					<div class="input-group">
+
+						<input type="text" placeholder="Diagnosis" class="form-control" id="diagnosis">
+						<button type="submit" class="btn btn-primary">
+							Add
+						</button>
+					</div>
+
+
+				</form>
+				<div class="row">
+					<div class="col-md-12">
+						<ol class="mt-2">
+							<li>First diagnosis</li>
+							<li>Second diagnosis</li>
+							<li>Third diagnosis</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<h5 class="text-center mt-4">
+					Medicine
+				</h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<form role="form">
+					<div class="input-group inline">
+
+
+						<input type="text" placeholder="medicine" name="medicine" class="input-group mb-2"
+							id="medicine">
+						<input type="text" placeholder="Dose 1" name="dose1" class="form-control mt-1 mr-1 mb-1"
+							id="dose2">
+						<input type="text" placeholder="Dose 2" name="dose2" class="form-control m-1" id="dose2">
+						<input type="text" placeholder="Dose 3" name="dose3" class="form-control m-1" id="dose3">
+						<input type="text" placeholder="Duration" name="duration" class="form-control m-1" id="dose3">
+						<button type="submit" class="btn btn-primary mt-1 mb-1 ml-1">
+							Add
+						</button>
+					</div>
+
+
+				</form>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<ol class="mt-2 inline">
+						<li>First complain</li><a href="#" onclick="remove()">remove</a>
+						<li>Second complain</li>
+						<li>Third complain</li>
+					</ol>
+				</div>
+			</div>
+
+
+		</div>
+
+		<h5 class="text-center mt-5">Diagnostic Test(s)</h5>
+		<div class="row">
+			<div class="col-md-12">
+				<form role="form">
+					<div class="input-group">
+
+
+						<input type="text" placeholder="Instructions" class="form-control" id="exampleInputEmail1">
+						<button type="submit" class="btn btn-primary">
+							Add
+						</button>
+					</div>
+
+
+				</form>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<ol class="mt-2 inline">
+						<li>First complain</li><a href="#" onclick="remove()">remove</a>
+						<li>Second complain</li>
+						<li>Third complain</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+
+		<h5 class="text-center mt-5">Additional Instructions</h5>
+		<div class="row">
+			<div class="col-md-12">
+				<form role="form">
+					<div class="input-group">
+
+
+						<input type="text" placeholder="Instructions" class="form-control" id="exampleInputEmail1">
+						<button type="submit" class="btn btn-primary">
+							Add
+						</button>
+					</div>
+
+
+				</form>
+			</div>
+
+			<div class="row">
+				<div class="col-md-12">
+					<ol class="mt-2 inline">
+						<li>First complain</li><a href="#" onclick="remove()">remove</a>
+						<li>Second complain</li>
+						<li>Third complain</li>
+					</ol>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+			</div>
+		</div>
+	</div>
+
+
+	<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+
+
+
+	<script>
+
+	</script>
+</body>
+
+</html>

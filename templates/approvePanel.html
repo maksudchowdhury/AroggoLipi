@@ -1,0 +1,103 @@
+{% load static %}
+{% static "" as baseUrl %}
+{% static "images" as images %}
+{% static "css" as css %}
+{% static "fonts" as fonts %}
+{% static "js" as js %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Approval Panel</title>
+	<link href="{{css}}/bootstrap.min.css" rel="stylesheet">
+
+	<link href="{{css}}/style.css" rel="stylesheet">
+
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<nav class="navbar navbar-light bg-light justify-content-between">
+					<a class="navbar-brand">{{ centerName }}</a>
+					<form class="form-inline" action="{% url 'healthcareLoginPage'%}">
+						{% csrf_token %}
+						<button class="btn btn-outline-primary my-2 my-sm-0 mr-5" type="submit">Logout</button>
+					</form>
+				</nav>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<h4 class="text-center text-primary mt-3 mb-5">
+					Doctors' Approval Point
+				</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<table class="table table-hover	">
+					<thead>
+						<tr>
+
+							<th scope="col">#</th>
+							<th scope="col">Name</th>
+							<th scope="col">Employee ID</th>
+							<th scope="col">Phone</th>
+							<th scope="col">Designation</th>
+							<th scope="col" class="text-center">Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for data in panelInformation %}
+						<tr>
+							<td>{{ data.id }}</td>
+							<td>{{ data.docName }}</td>
+							<td>{{ data.docEID }}</td>
+							<td>{{ data.docPhone }}</td>
+							<td>{{ data.docDepartment }}</td>
+							<td class="justify-content-center text-center">
+								<form action="{% url 'panelRequest' %}" method="post" name="panelRequest">
+									{% csrf_token %}
+									<button type="submit" name="accept" value="accept_{{ data.id }}_{{ centerName }}"
+										class="btn btn-success m-1 btn-sm">Accept</button>
+									<button type="submit" name="decline" value="decline_{{ data.id }}_{{ centerName }}"
+										class="btn btn-danger m-1 btn-sm">Decline</button>
+
+								</form>
+							</td>
+						</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- <script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/scripts.js"></script> -->
+
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script>
+</body>
+
+</html>

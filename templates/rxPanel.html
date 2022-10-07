@@ -1,0 +1,502 @@
+{% load static %}
+{% static "" as baseUrl %}
+{% static "images" as images %}
+{% static "css" as css %}
+{% static "fonts" as fonts %}
+{% static "js" as js %}
+{% static "patientsUploadedImage" as patientsUploadedImage %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>RxPanel</title>
+
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+		integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+	<style>
+		#patientImage {
+			height: 150px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<nav class="navbar navbar-light bg-light justify-content-between">
+					<a class="navbar-brand">RxPanel</a>
+
+					<!-- <button class="btn btn-primary" onclick="window.print()">Print Page</button> -->
+
+
+					<form class="form-inline" action="{% url 'docLoginPage'%}">
+						<button class="btn btn-outline-primary" type="submit">Logout</button>
+					</form>
+				</nav>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-2">
+			</div>
+			<div class="col-sm-8 justify-content-center">
+				<form role="form" class="text-center" action="{% url 'patientSelectProcess' %}" method="post">
+					{% csrf_token %}
+
+					{% if messages %}
+					{% for msg in messages%}
+					<div class="alert alert-danger mt-2" role="alert">
+						{{ msg }}
+					</div>
+					{% endfor %}
+					{% endif %}
+					<div class="input-group mt-5">
+
+						<input type="text" placeholder="Patient email" id="patientEmail" class="form-control empty"
+							name="patientEmail" value={{ patientEmail }}>
+						<input type="date" class="form-control" id="visitingDate" placeholder="Date" name="visitingDate"
+							value={{ visitingDate }}>
+
+						<button type="submit" class="btn btn-primary ml-2">
+							Add Patient
+						</button>
+					</div>
+
+
+				</form>
+			</div>
+			<div class="col-sm-2">
+			</div>
+		</div>
+		{% if patientSelected %}
+
+		<div class="row">
+			<div class="col-md-4 d-flex justify-content-center p-5">
+				<img alt="Bootstrap Image Preview" src="{{ patientsUploadedImage }}/{{ patientImageFileName }}"
+					class=" rounded-circle" style="height: 150px; width:150px; object-fit: cover" id="patientImage">
+			</div>
+
+			<div class="col-md-8 mt-5">
+				<dl>
+					<dt>
+						Patient Details
+					</dt>
+					<dd>
+						Name: {{ patientDetails.patientName }}
+						<br>
+						NID: {{ patientDetails.patientNID }}
+						<br>
+						Phone: {{ patientDetails.patientPhone }}
+						<br>
+						Email: {{ patientDetails.patientEmail }}
+						<br>
+
+
+					</dd>
+
+				</dl>
+			</div>
+		</div>
+
+		<hr>
+		<h5 class="text-center"><mark>Current Status</mark></h5>
+		<div class="row d-flex justify-content-center">
+			<div class="col-md-2">
+			</div>
+			<div class="col-md-8 text-center">
+				<form role="form" action="" method="post" id="healthStatusForm" name="healthStatusForm">
+					{% csrf_token %}
+					<div class="input-group">
+						<input placeholder="id" type="hidden" class="form-control mt-2" id="statusIDInput"
+							name="statusID">
+						<input placeholder="Blood Pressure" type="text" class="form-control mt-2" id="bpInput"
+							name="bp">
+						<input placeholder="Temperature" type="text" class="form-control mt-2" id="tempInput"
+							name="temp">
+						<input placeholder="Pulse" type="text" class="form-control mt-2" id="pulseInput" name="pulse">
+						<button type="button" class="btn btn-primary mt-2 ml-2" id="addStatus">
+							Add
+						</button>
+					</div>
+
+
+				</form>
+			</div>
+			<div class="col-md-2">
+			</div>
+		</div>
+		<table class="table mt-2">
+			<thead>
+				<tr>
+					<th>Blood Pressure</th>
+					<th>Body Temperature (Fº)</th>
+					<th>Pulse</th>
+					<th class="text-center">Actions</th>
+				</tr>
+			</thead>
+			<tbody id="currentStatusTable">
+				{% for h in currentStatus %}
+				<tr>
+					<td>{{ h.bloodPressure}}</td>
+					<td>{{ h.temperature}}</td>
+					<td>{{ h.pulse}}</td>
+					<td class="text-center">
+
+						<button class="btn btn-outline-success btn-sm btn-mod" id="btnMod"
+							data-statID="{{ h.id }}">modify</button>
+						<button class="btn btn-outline-danger btn-sm btn-del" id="btnDel"
+							data-statID="{{ h.id }}">delete</button>
+					</td>
+				</tr>
+				{% endfor %}
+
+			</tbody>
+		</table>
+		<div class="row d-flex justify-content-center">
+			<div class="col-md-6 complainBox b-5">
+				<h5 class="mt-5 text-center">
+					<mark>Chief Complain</mark>
+				</h5>
+				<form role="form" action="" method="POST" id="complainForm" name="complainForm">
+					{% csrf_token %}
+					<div class="input-group">
+						<input placeholder="id" type="hidden" class="form-control mt-2" id="complainIDInput" value=""
+							name="complainIDInput">
+
+						<input type="text" placeholder="Complain" class="form-control" id="complainInput"
+							name="complainInput">
+						<button type="button" class="btn btn-primary ml-2" id="addComplain">
+							Add
+						</button>
+					</div>
+
+
+				</form>
+				<div class="row d-flex">
+					<table class="table mt-2 mr-2">
+						<thead>
+							<tr>
+								<th>Complain</th>
+								<th class="text-center">Actions</th>
+							</tr>
+						</thead>
+						<tbody id="complainTable">
+
+
+
+							{% for c in complain %}
+							<tr>
+								<td>{{ c.complain }}</td>
+								<td class="text-center">
+									<button class="btn btn-outline-success btn-sm btn-mod-complain" id="btnModComplain"
+										data-complainID="{{ c.id }}">modify</button>
+									<button class="btn btn-outline-danger btn-sm btn-del-complain" id="btnDelComplain"
+										data-complainID="{{ c.id }}">delete</button>
+								</td>
+							</tr>
+							{% endfor %}
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+
+
+
+			<div class="col-md-6">
+				<h5 class="mt-5 text-center">
+					<mark>Diagnosis</mark>
+				</h5>
+				<form role="form" action="" method="post" id="diagnosisForm" name="diagnosisForm">
+					{% csrf_token %}
+					<div class="input-group">
+						<input placeholder="id" type="hidden" class="form-control mt-2" id="diagnosisIDInput"
+							name="diagnosisIDInput">
+
+						<input type="text" placeholder="Diagnosis" class="form-control" id="diagnosisInput"
+							name="diagnosisInput">
+						<button type="button" class="btn btn-primary ml-2" id="addDiagnosis" name="addDiagnosis">
+							Add
+						</button>
+					</div>
+
+
+				</form>
+				<div class="row d-flex">
+					<table class="table mt-2 ml-2">
+						<thead>
+							<tr>
+								<th>Diagnosis</th>
+								<th class="text-center">Actions</th>
+							</tr>
+						</thead>
+						<tbody id="diagnosisTable">
+
+
+
+							{% for d in diagnosis %}
+							<tr>
+								<td>{{ d.diagnosis }}</td>
+								<td class="text-center">
+									<button class="btn btn-outline-success btn-sm btn-mod-diagnosis"
+										id="btnModDiagnosis" data-diagnosisID="{{ d.id }}">modify</button>
+									<button class="btn btn-outline-danger btn-sm btn-del-diagnosis" id="btnDelDiagnosis"
+										data-diagnosisID="{{ d.id }}">delete</button>
+								</td>
+							</tr>
+							{% endfor %}
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="row">
+			<div class="col-md-12">
+				<h5 class="text-center mt-4">
+					<mark>Medicine</mark>
+				</h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<form role="form" action="" method="post" id="medicineForm" name="medicineForm">
+
+					{% csrf_token %}
+					<div class="input-group">
+						<input placeholder="id" type="hidden" class="form-control mt-2" id="medicineIDInput"
+							name="medicineIDInput">
+
+
+						<input type="text" placeholder="medicine" name="medicine" class="input-group mb-2"
+							id="medicineInput" name="medicineInput">
+						<input type="text" placeholder="Dose 1" name="dose1" class="form-control mt-1 mr-1 mb-1"
+							id="dose1Input">
+						<input type="text" placeholder="Dose 2" name="dose2Input" class="form-control mt-1 mr-1 mb-1"
+							id="dose2Input">
+						<input type="text" placeholder="Dose 3" name="dose3Input" class="form-control mt-1 mr-1 mb-1"
+							id="dose3Input">
+						<input type="text" placeholder="Duration" name="durationInput"
+							class="form-control mt-1 mr-1 mb-1" id="durationInput">
+
+						<button type="button" class="btn btn-primary mt-1 mb-1 ml-1" id="addMedicine">
+							Add
+						</button>
+					</div>
+
+
+				</form>
+			</div>
+
+
+
+
+		</div>
+		<div class="row d-flex">
+			<table class="table mt-2 ">
+				<thead>
+					<tr>
+						<th>Medicine</th>
+						<th>dose-1</th>
+						<th>dose-2</th>
+						<th>dose-3</th>
+						<th>Duration (days)</th>
+						<th class="text-center">Actions</th>
+					</tr>
+				</thead>
+				<tbody id="medicineTable">
+
+					{% for m in medicine %}
+					<tr>
+						<td>{{ m.medicineName }}</td>
+						<td>{{ m.dose1 }}</td>
+						<td>{{ m.dose2 }}</td>
+						<td>{{ m.dose3 }}</td>
+						<td>{{ m.duration }}</td>
+						<td class="text-center">
+							<button class="btn btn-outline-success btn-sm btn-mod-medicine" id="btnModMedicine"
+								data-medicineID="{{ m.id }}">modify</button>
+							<button class="btn btn-outline-danger btn-sm btn-del-medicine" id="btnDelMedicine"
+								data-medicineID="{{ m.id }}">delete</button>
+						</td>
+					</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+		</div>
+		<h5 class="text-center mt-5"><mark>Diagnostic Test</mark></h5>
+		<div class="row">
+			<div class="col-md-12">
+				<form role="form" action="" method="post" id="testForm" name="testForm">
+					{% csrf_token %}
+					<div class="input-group">
+						<input placeholder="id" type="hidden" class="form-control mt-2" id="testIDInput"
+							name="testIDInput">
+
+
+						<input type="text" placeholder="Test" class="form-control" id="testInput" name="testInput">
+						<button type="button" class="btn btn-primary ml-2" id="addTest">
+							Add
+						</button>
+					</div>
+
+
+				</form>
+			</div>
+		</div>
+
+		<div class="row d-flex">
+			<table class="table mt-2">
+				<thead>
+					<tr>
+						<th>Tests</th>
+						<th class="text-center">Actions</th>
+					</tr>
+				</thead>
+				<tbody id="testTable">
+
+
+					{% for t in patientDiagTest %}
+					<tr>
+						<td>{{ t.diagTest }}</td>
+						<td class="text-center">
+							<button class="btn btn-outline-success btn-sm btn-mod-test" id="btnModTest"
+								data-testID="{{ t.id }}">modify</button>
+							<button class="btn btn-outline-danger btn-sm btn-del-test" id="btnDelTest"
+								data-testID="{{ t.id }}">delete</button>
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+
+		<h5 class="text-center mt-5"><mark>Additional Instructions</mark></h5>
+		<div class="row">
+			<div class="col-md-12">
+				<form role="form" action="" method="post" id="instructionForm" name="instructionForm">
+					{% csrf_token %}
+					<div class="input-group">
+						<input placeholder="id" type="hidden" class="form-control mt-2" id="instructionIDInput"
+							name="instructionIDInput">
+
+
+						<input type="text" placeholder="Instructions" class="form-control" id="instructionInput"
+							name="instructionInput">
+						<button type="button" class="btn btn-primary ml-2" id="addInstruction">
+							Add
+						</button>
+					</div>
+
+
+				</form>
+			</div>
+		</div>
+
+		<div class="row d-flex">
+			<table class="table mt-2">
+				<thead>
+					<tr>
+						<th>Instructions</th>
+						<th class="text-center">Actions</th>
+					</tr>
+				</thead>
+				<tbody id="instructionTable">
+
+
+					{% for i in instruction %}
+					<tr>
+						<td>{{ i.instruction }}</td>
+						<td class="text-center">
+							<button class="btn btn-outline-success btn-sm btn-mod-instruction" id="btnModInstruction"
+								data-instructionID="{{ i.id }}">modify</button>
+							<button class="btn btn-outline-danger btn-sm btn-del-instruction" id="btnDelInstruction"
+								data-instructionID="{{ i.id }}">delete</button>
+						</td>
+					</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+
+				<br>
+				<br>
+				<br>
+			</div>
+		</div>
+
+
+
+		<div class="row d-flex justify-content-center">
+
+			<div class="col-md-12 text-center">
+
+
+				<button style="padding: 8px 50px;" type="button" onclick="window.print()"
+					class="btn btn-primary btn-md mt-2 ml-2 text-center w-10" id="printPage">
+					Print
+				</button>
+
+
+			</div>
+
+		</div>
+
+		{% endif %}
+		<br>
+		<br>
+		<br>
+	</div>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+	<script src='https://code.jquery.com/jquery-3.2.1.min.js'></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous"></script> -->
+	<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous"></script> -->
+
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+		integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+		integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+		crossorigin="anonymous"></script>
+
+
+
+	{% include 'ajax.html' %}
+</body>
+
+</html>

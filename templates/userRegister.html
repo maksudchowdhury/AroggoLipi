@@ -1,0 +1,116 @@
+{% load static %}
+{% static "" as baseUrl %}
+{% static "images" as images %}
+{% static "css" as css %}
+{% static "fonts" as fonts %}
+{% static "js" as js %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Register</title>
+
+    <link href="{{css}}/bootstrap.min.css" rel="stylesheet">
+
+    <link href="{{css}}/style.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <div class="container h-100">
+
+
+
+
+        <div class="row  h-100 text-center">
+            <div class="col-md-3">
+            </div>
+            <div class="col-md-6 jumbotron" id="msg">
+
+
+                <form action="{% url 'userRegisterProcess'%}" class="form-login text-center" method="POST"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <img class="mb-3" src="{{images}}/Logo.png" alt="">
+                    <br>
+                    <h4 class="mb-4 mt-2 text-muted">Patient Registration</h4>
+
+                    {% if messages %}
+                    {% for msg in messages%}
+                    <div class="alert alert-danger" role="alert">
+                        {{ msg }}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+
+
+
+
+
+
+                    <input name="patientName" type="text" placeholder="Enter Full name" class="form-control w-100 mb-3"
+                        required>
+                    <input name="patientNID" type="number" placeholder="Enter NID number"
+                        class="form-control w-100 mb-3" required>
+                    <input name="patientDOB" type="date" placeholder="Enter birth date" class="form-control w-100 mb-3"
+                        required>
+
+                    <input name="patientPhone" type="number" placeholder="Enter Phone Number"
+                        class="form-control w-100 mb-3" required>
+                    <input name="patientEmail" type="email" placeholder="Enter Email" class="form-control w-100 mb-3"
+                        required>
+                    <input name="patientPassword" type="password" placeholder="Enter password" name="password"
+                        class="form-control w-100 mb-3" required>
+                    <input name="patientCPassword" type="password" placeholder="Confirm password" name="cpassword"
+                        class="form-control w-100 mb-3" required>
+                    <label class="text-left">Upload your profile image</label>
+                    <input name="patientImage" type="file" accept="image/*" placeholder=""
+                        class="form-control w-100 mb-1" required>
+                    <section class="text-left mb-2"><small>Upload images that are 300x300 pixels in resolution</small>
+                    </section>
+                    <div class="checkbox">
+                        <label for="">
+                            <input type="checkbox"> Remember Me
+                        </label>
+                    </div>
+                    <button class="btn mt-3 mb-3 btn-success" type="submit" name="userRegisterBtn">Register</button><br>
+                    <a href="{% url 'docRegisterPage'%}" class="text-primary badge badge-light text-center">
+                        <h6>Not a patient? Register as a doctor</h6>
+                    </a>
+                </form>
+
+
+
+            </div>
+            <div class="col-md-3">
+
+            </div>
+        </div>
+    </div>
+
+    <!-- <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script> -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

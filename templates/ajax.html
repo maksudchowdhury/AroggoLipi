@@ -1,0 +1,592 @@
+<script type="text/javascript">
+    $("#addStatus").click(function () {
+
+        output = "";
+        let statusID = $("#statusIDInput").val();
+        let bp = $("#bpInput").val();
+        let temp = $("#tempInput").val();
+        let pulse = $("#pulseInput").val();
+        let visitingDate = $("#visitingDate").val();
+        let patientEmail = $("#patientEmail").val();
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        console.log("addStatus btn clicked" + patientEmail + visitingDate);
+        if (bp != "" && pulse != "" && temp != "" && visitingDate != "" && patientEmail != "") {
+            myData = { patientEmail: patientEmail, visitingDate: visitingDate, bp: bp, temp: temp, pulse: pulse, statusID: statusID, csrfmiddlewaretoken: csr }
+            $.ajax({
+                url: "{% url 'savePatientStatus' %}",
+                method: "POST",
+                data: myData,
+                success: function (data) {
+                    x = data.currentStatusTable;
+                    if (data.status == 'saved') {
+                        console.log("data submitted successfully")
+
+                        for (i = 0; i < x.length; i++) {
+                            output += "<tr><td>" + x[i].bloodPressure + "</td><td>" + x[i].temperature + "</td><td>" + x[i].pulse +
+                                "</td><td class='text-center'><button class='btn btn-outline-success btn-sm btn-mod' id='btnMod' data-statID=" + x[i].id + ">modify</button> <button class='btn btn-outline-danger btn-sm btn-del' id='btnDel' data-statID=" + x[i].id + ">delete</button></td></tr>";
+                        }
+                        //$("#currentStatusTable").reset();
+                        $("#currentStatusTable").html(output);
+                        $("form")[2].reset();
+                        $("#statusIDInput").val("");
+                    }
+                }
+            });
+        }
+    });
+
+    $("tbody").on("click", ".btn-del", function () {
+
+        var consent;
+        if (confirm("Press OK to Delete")) {
+            consent = true;
+        } else {
+            consent = false;
+        }
+
+        if (consent) {
+            console.log("delete button clicked");
+            let id = $(this).attr("data-statID");
+            let csr = $("input[name=csrfmiddlewaretoken").val();
+
+            myData = { id: id, csrfmiddlewaretoken: csr }
+            thisRow = this;
+            $.ajax({
+                url: "{% url 'deletePatientStatus' %}",
+                method: "POST",
+                data: myData,
+                success: function (data) {
+                    if (data.status == "deleted") {
+                        console.log("data deleted")
+                        $(thisRow).closest("tr").fadeOut();
+                        $("form")[2].reset();
+                        $("#statusIDInput").val("");
+                    }
+
+                }
+            });
+        }
+    });
+
+    $("tbody").on("click", ".btn-mod", function () {
+        console.log("edit button clicked");
+        let id = $(this).attr("data-statID");
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        myData = { id: id, csrfmiddlewaretoken: csr }
+        console.log("edit button clicked id is " + id);
+        $.ajax({
+
+            url: "{% url 'editPatientStatus' %}",
+            method: "POST",
+            data: myData,
+            success: function (data) {
+                x = data.currentStatusRow;
+                $("#bpInput").val(x[0].bloodPressure);
+                $("#tempInput").val(x[0].temperature);
+                $("#pulseInput").val(x[0].pulse);
+                $("#statusIDInput").val(x[0].id);
+
+            }
+        });
+        console.log("ajax initiated");
+    });
+
+
+
+
+
+    $("#addComplain").click(function () {
+
+        output = "";
+        let complainID = $("#complainIDInput").val();
+        let complain = $("#complainInput").val();
+
+        let visitingDate = $("#visitingDate").val();
+        let patientEmail = $("#patientEmail").val();
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        console.log("addComplain btn clicked, id: " + complainID + "complain: " + complain);
+
+        if (complain != "" && visitingDate != "" && patientEmail != "") {
+            myData = { patientEmail: patientEmail, visitingDate: visitingDate, complain: complain, complainID: complainID, csrfmiddlewaretoken: csr }
+            $.ajax({
+                url: "{% url 'savePatientComplain' %}",
+                method: "POST",
+                data: myData,
+                success: function (data) {
+                    x = data.complainTable;
+                    if (data.status == 'saved') {
+                        console.log("data submitted successfully")
+                        console.log(x)
+                        for (i = 0; i < x.length; i++) {
+                            output += "<tr><td>" + x[i].complain + "<td class='text-center'><button class='btn btn-outline-success btn-sm btn-mod-complain' id='btnModComplain' data-complainID=" + x[i].id + ">modify</button> <button class='btn btn-outline-danger btn-sm btn-del-complain' id='btnDelComplain' data-complainID=" + x[i].id + ">delete</button></td></tr>";
+                        }
+
+                        //$("#currentStatusTable").reset();
+                        $("#complainTable").html(output);
+                        $("form")[3].reset();
+                        $("#complainIDInput").val("");
+                    }
+                }
+            });
+        }
+
+    });
+
+    $("tbody").on("click", ".btn-del-complain", function () {
+
+        var consent;
+        if (confirm("Press OK to Delete")) {
+            consent = true;
+        } else {
+            consent = false;
+        }
+
+        if (consent) {
+            console.log("delete button clicked");
+            let complainID = $(this).attr("data-complainID");
+            let csr = $("input[name=csrfmiddlewaretoken").val();
+
+            myData = { complainID: complainID, csrfmiddlewaretoken: csr }
+            thisRow = this;
+            $.ajax({
+                url: "{% url 'deletePatientComplain' %}",
+                method: "POST",
+                data: myData,
+                success: function (data) {
+                    if (data.status == "deleted") {
+                        console.log("data deleted")
+                        $(thisRow).closest("tr").fadeOut();
+                        $("form")[3].reset();
+                        $("#complainIDInput").val("");
+                    }
+
+                }
+            });
+        }
+    });
+
+    $("tbody").on("click", ".btn-mod-complain", function () {
+        console.log("edit button clicked");
+        let complainID = $(this).attr("data-complainID");
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        myData = { complainID: complainID, csrfmiddlewaretoken: csr }
+        console.log("edit button clicked id is " + complainID);
+        $.ajax({
+
+            url: "{% url 'editPatientComplain' %}",
+            method: "POST",
+            data: myData,
+            success: function (data) {
+                x = data.currentComplainRow;
+                $("#complainInput").val(x[0].complain);
+                $("#complainIDInput").val(x[0].id);
+            }
+        });
+        console.log("ajax initiated");
+    });
+
+
+
+    $("#addDiagnosis").click(function () {
+
+        output = "";
+        let diagnosisID = $("#diagnosisIDInput").val();
+        let diagnosis = $("#diagnosisInput").val();
+
+        let visitingDate = $("#visitingDate").val();
+        let patientEmail = $("#patientEmail").val();
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        console.log("addDiagnosis btn clicked, id: " + diagnosisID + "diagnosis: " + diagnosis);
+
+        if (diagnosis != "" && visitingDate != "" && patientEmail != "") {
+            myData = { patientEmail: patientEmail, visitingDate: visitingDate, diagnosis: diagnosis, diagnosisID: diagnosisID, csrfmiddlewaretoken: csr }
+            $.ajax({
+                url: "{% url 'savePatientDiagnosis' %}",
+                method: "POST",
+                data: myData,
+                success: function (data) {
+                    x = data.diagnosisTable;
+                    if (data.status == 'saved') {
+                        console.log("data submitted successfully")
+                        console.log(x)
+                        for (i = 0; i < x.length; i++) {
+                            output += "<tr><td>" + x[i].diagnosis + "<td class='text-center'><button class='btn btn-outline-success btn-sm btn-mod-complain' id='btnModComplain' data-diagnosisID=" + x[i].id + ">modify</button> <button class='btn btn-outline-danger btn-sm btn-del-complain' id='btnDelComplain' data-diagnosisID=" + x[i].id + ">delete</button></td></tr>";
+                        }
+
+                        //$("#currentStatusTable").reset();
+                        $("#diagnosisTable").html(output);
+                        $("form")[4].reset();
+                        $("#diagnosisIDInput").val("");
+                    }
+                }
+            });
+        }
+
+    });
+
+    $("tbody").on("click", ".btn-del-diagnosis", function () {
+
+        var consent;
+        if (confirm("Press OK to Delete")) {
+            consent = true;
+        } else {
+            consent = false;
+        }
+
+        if (consent) {
+            console.log("delete button clicked");
+            let diagnosisID = $(this).attr("data-diagnosisID");
+            let csr = $("input[name=csrfmiddlewaretoken").val();
+
+            myData = { diagnosisID: diagnosisID, csrfmiddlewaretoken: csr }
+            thisRow = this;
+            $.ajax({
+                url: "{% url 'deletePatientDiagnosis' %}",
+                method: "POST",
+                data: myData,
+                success: function (data) {
+                    if (data.status == "deleted") {
+                        console.log("data deleted")
+                        $(thisRow).closest("tr").fadeOut();
+
+                        $("form")[4].reset();
+                        $("#diagnosisIDInput").val("");
+                    }
+
+                }
+            });
+        }
+    });
+
+    $("tbody").on("click", ".btn-mod-diagnosis", function () {
+        console.log("edit button clicked");
+        let diagnosisID = $(this).attr("data-diagnosisID");
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        myData = { diagnosisID: diagnosisID, csrfmiddlewaretoken: csr }
+        console.log("edit button clicked id is " + diagnosisID);
+        $.ajax({
+
+            url: "{% url 'editPatientDiagnosis' %}",
+            method: "POST",
+            data: myData,
+            success: function (data) {
+                x = data.currentDiagnosisRow;
+                console.log("diagnosis row read was successful, diagnosis: " + x[0].diagnosis)
+
+                $("#diagnosisInput").val(x[0].diagnosis);
+                $("#diagnosisIDInput").val(x[0].id);
+            }
+        });
+        console.log("ajax initiated");
+    });
+
+
+
+
+
+    $("#addTest").click(function () {
+
+        output = "";
+        let testID = $("#testIDInput").val();
+        let test = $("#testInput").val();
+
+        let visitingDate = $("#visitingDate").val();
+        let patientEmail = $("#patientEmail").val();
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        console.log("addTest btn clicked, id: " + testID + "test: " + test);
+
+        if (test != "" && visitingDate != "" && patientEmail != "") {
+            myData = { patientEmail: patientEmail, visitingDate: visitingDate, test: test, testID: testID, csrfmiddlewaretoken: csr }
+            $.ajax({
+                url: "{% url 'savePatientTest' %}",
+                method: "POST",
+                data: myData,
+                success: function (data) {
+                    x = data.testTable;
+                    if (data.status == 'saved') {
+                        console.log("data submitted successfully")
+                        console.log(x)
+                        for (i = 0; i < x.length; i++) {
+                            output += "<tr><td>" + x[i].diagTest + "<td class='text-center'><button class='btn btn-outline-success btn-sm btn-mod-complain' id='btnModComplain' data-testID=" + x[i].id + ">modify</button> <button class='btn btn-outline-danger btn-sm btn-del-complain' id='btnDelComplain' data-testID=" + x[i].id + ">delete</button></td></tr>";
+                        }
+
+                        //$("#currentStatusTable").reset();
+                        $("#testTable").html(output);
+                        $("form")[6].reset();
+                        $("#testIDInput").val("");
+                    }
+                }
+            });
+        }
+
+    });
+
+    $("tbody").on("click", ".btn-del-test", function () {
+
+        var consent;
+        if (confirm("Press OK to Delete")) {
+            consent = true;
+        } else {
+            consent = false;
+        }
+
+        if (consent) {
+            console.log("delete button clicked");
+            let testID = $(this).attr("data-testID");
+            let csr = $("input[name=csrfmiddlewaretoken").val();
+
+            myData = { testID: testID, csrfmiddlewaretoken: csr }
+            thisRow = this;
+            $.ajax({
+                url: "{% url 'deletePatientTest' %}",
+                method: "POST",
+                data: myData,
+                success: function (data) {
+                    if (data.status == "deleted") {
+                        console.log("data deleted")
+                        $(thisRow).closest("tr").fadeOut();
+                        $("form")[6].reset();
+                        $("#testIDInput").val("");
+                    }
+
+                }
+            });
+        }
+    });
+
+    $("tbody").on("click", ".btn-mod-test", function () {
+        console.log("edit button clicked");
+        let testID = $(this).attr("data-testID");
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        myData = { testID: testID, csrfmiddlewaretoken: csr }
+        console.log("edit button clicked id is " + testID);
+        $.ajax({
+
+            url: "{% url 'editPatientTest' %}",
+            method: "POST",
+            data: myData,
+            success: function (data) {
+                x = data.currentTestRow;
+                console.log("test row read was successful, test: " + x[0].diagTest)
+
+                $("#testInput").val(x[0].diagTest);
+                $("#testIDInput").val(x[0].id);
+            }
+        });
+        console.log("ajax initiated");
+    });
+
+
+
+
+
+
+    $("#addInstruction").click(function () {
+
+        output = "";
+        let instructionID = $("#instructionIDInput").val();
+        let instruction = $("#instructionInput").val();
+
+        let visitingDate = $("#visitingDate").val();
+        let patientEmail = $("#patientEmail").val();
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        console.log("addInstruction btn clicked, id: " + instructionID + "instruction: " + instruction);
+
+        if (instruction != "" && visitingDate != "" && patientEmail != "") {
+            myData = { patientEmail: patientEmail, visitingDate: visitingDate, instruction: instruction, instructionID: instructionID, csrfmiddlewaretoken: csr }
+            $.ajax({
+                url: "{% url 'savePatientInstruction' %}",
+                method: "POST",
+                data: myData,
+                success: function (data) {
+                    x = data.instructionTable;
+                    if (data.status == 'saved') {
+                        console.log("data submitted successfully")
+                        console.log(x)
+                        for (i = 0; i < x.length; i++) {
+                            output += "<tr><td>" + x[i].instruction + "<td class='text-center'><button class='btn btn-outline-success btn-sm btn-mod-instruction' id='btnModInstruction' data-instructionID=" + x[i].id + ">modify</button> <button class='btn btn-outline-danger btn-sm btn-del-instruction' id='btnDelInstruction' data-instructionID=" + x[i].id + ">delete</button></td></tr>";
+                        }
+
+                        //$("#currentStatusTable").reset();
+                        $("#instructionTable").html(output);
+                        $("form")[7].reset();
+                        $("#instructionIDInput").val("");
+                    }
+                }
+            });
+        }
+
+    });
+
+    $("tbody").on("click", ".btn-del-instruction", function () {
+
+        var consent;
+        if (confirm("Press OK to Delete")) {
+            consent = true;
+        } else {
+            consent = false;
+        }
+
+        if (consent) {
+            console.log("delete button clicked");
+            let instructionID = $(this).attr("data-instructionID");
+            let csr = $("input[name=csrfmiddlewaretoken").val();
+
+            myData = { instructionID: instructionID, csrfmiddlewaretoken: csr }
+            thisRow = this;
+            $.ajax({
+                url: "{% url 'deletePatientInstruction' %}",
+                method: "POST",
+                data: myData,
+                success: function (data) {
+                    if (data.status == "deleted") {
+                        console.log("data deleted")
+                        $(thisRow).closest("tr").fadeOut();
+
+                        console.log(thisRow)
+                        $("form")[7].reset();
+                        $("#instructionIDInput").val("");
+
+                    }
+
+                }
+            });
+        }
+    });
+
+    $("tbody").on("click", ".btn-mod-instruction", function () {
+        console.log("edit button clicked");
+        let instructionID = $(this).attr("data-instructionID");
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        myData = { instructionID: instructionID, csrfmiddlewaretoken: csr }
+        console.log("edit button clicked id is " + instructionID);
+        $.ajax({
+
+            url: "{% url 'editPatientInstruction' %}",
+            method: "POST",
+            data: myData,
+            success: function (data) {
+                x = data.currentInstructionRow;
+                console.log("instruction row read was successful, test: " + x[0].instruction)
+
+                $("#instructionInput").val(x[0].instruction);
+                $("#instructionIDInput").val(x[0].id);
+            }
+        });
+        console.log("ajax initiated");
+    });
+
+
+
+
+    $("#addMedicine").click(function () {
+
+        output = "";
+
+        let medicineID = $("#medicineIDInput").val();
+        let medicine = $("#medicineInput").val();
+        let dose1 = $("#dose1Input").val();
+        let dose2 = $("#dose2Input").val();
+        let dose3 = $("#dose3Input").val();
+        let duration = $("#durationInput").val();
+
+        let visitingDate = $("#visitingDate").val();
+        let patientEmail = $("#patientEmail").val();
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        console.log("addMedicine btn clicked, id: " + medicineID + "medicine: " + medicine);
+
+        if (medicine != "" && visitingDate != "" && patientEmail != "" && dose1 != "" && dose2 != "" && dose3 != "" && duration != "") {
+            myData = { patientEmail: patientEmail, visitingDate: visitingDate, medicine: medicine, medicineID: medicineID, dose1: dose1, dose2: dose2, dose3: dose3, duration: duration, csrfmiddlewaretoken: csr }
+            $.ajax({
+                url: "{% url 'savePatientMedicine' %}",
+                method: "POST",
+                data: myData,
+                success: function (data) {
+                    x = data.medicineTable;
+                    if (data.status == 'saved') {
+                        console.log("data submitted successfully")
+
+                        for (i = 0; i < x.length; i++) {
+                            output += "<tr><td>" + x[i].medicineName + "</td><td>" + x[i].dose1 + "</td><td>" + x[i].dose2 + "</td><td>" + x[i].dose3 + "</td><td>" + x[i].duration + "</td><td class='text-center'><button class='btn btn-outline-success btn-sm btn-mod-medicine' id='btnModMedicine'data-medicineID=" + x[i].id + ">modify</button> <button class='btn btn-outline-danger btn-sm btn-del-medicine' id='btnDelMedicine'data-medicineID=" + x[i].id + ">delete</button></td></tr>"
+                        }
+                        console.log(x)
+                        //$("#currentStatusTable").reset();
+                        $("#medicineTable").html(output);
+                        $("form")[5].reset();
+                        $("#medicineIDInput").val("");
+                    }
+                }
+            });
+        }
+
+    });
+
+    $("tbody").on("click", ".btn-del-medicine", function () {
+
+        var consent;
+        if (confirm("Press OK to Delete")) {
+            consent = true;
+        } else {
+            consent = false;
+        }
+
+        if (consent) {
+            console.log("delete button clicked");
+            let medicineID = $(this).attr("data-medicineID");
+            let csr = $("input[name=csrfmiddlewaretoken").val();
+
+            myData = { medicineID: medicineID, csrfmiddlewaretoken: csr }
+            thisRow = this;
+            $.ajax({
+                url: "{% url 'deletePatientMedicine' %}",
+                method: "POST",
+                data: myData,
+                success: function (data) {
+                    if (data.status == "deleted") {
+                        console.log("data deleted")
+                        //$(thisRow).closest("tr").fadeOut();
+                        var tableRow = $(thisRow).closest('tr');
+                        tableRow.find('td').fadeOut('fast', function () { tableRow.remove(); })
+                        console.log(thisRow)
+                        $("#medicineTable").html(output);
+                        $("form")[5].reset();
+                        $("#medicineIDInput").val("");
+
+
+                    }
+
+                }
+            });
+        }
+    });
+
+    $("tbody").on("click", ".btn-mod-medicine", function () {
+        console.log("edit button clicked");
+        let medicineID = $(this).attr("data-medicineID");
+        let csr = $("input[name=csrfmiddlewaretoken").val();
+        myData = { medicineID: medicineID, csrfmiddlewaretoken: csr }
+        console.log("edit button clicked id is " + medicineID);
+        $.ajax({
+
+            url: "{% url 'editPatientMedicine' %}",
+            method: "POST",
+            data: myData,
+            success: function (data) {
+                x = data.currentMedicineRow;
+                console.log("medicine row read was successful, test: " + x[0].medicineName)
+
+                $("#medicineIDInput").val(x[0].id);
+                $("#medicineInput").val(x[0].medicineName);
+                $("#dose1Input").val(x[0].dose1);
+                $("#dose2Input").val(x[0].dose2);
+                $("#dose3Input").val(x[0].dose3);
+                $("#durationInput").val(x[0].duration);
+
+            }
+        });
+        console.log("ajax initiated");
+    });
+
+
+
+</script>
