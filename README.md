@@ -10,4 +10,13 @@ Here are some screenshots of the application <br>
 <br>
 <br>![image](https://user-images.githubusercontent.com/45464612/194614214-fb30e451-6404-4741-8999-17a2ca110956.png)
 <br>
+
+hospital approval dashboard for doctors
 ![image](https://user-images.githubusercontent.com/45464612/202781859-0b7abdeb-d0b9-44d2-9c8a-3614661b7265.png)
+
+doctors prescription panel
+![image](https://user-images.githubusercontent.com/45464612/202781968-502afc34-bd01-44eb-aa82-b29f88727931.png)
+
+patient report panel
+![image](https://user-images.githubusercontent.com/45464612/202781944-a81421d8-1c6e-4cb9-a4e9-9da90c105d2c.png)
+
