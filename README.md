@@ -2,7 +2,7 @@
 this is a Centralized patient management and prescription writing web application designed using python Django, Ajax, and SQL <br>
 
 Here are some screenshots of the application <br>
-test credentials:
+test credentials: <br>
 Hospital : ID- , Password- <br>
 Doctor : ID- , Password- <br>
 Patient : ID- , Password- <br>
