@@ -1,6 +1,8 @@
 # AroggoLipi
 this is a Centralized patient management and prescription writing web application designed using python Django, Ajax, and SQL <br>
 
+<a href="link.maksud.xyz/arlp" class="button primary">Live System</a> 
+
 Here are some screenshots of the application <br>
 test credentials: <br>
 Hospital : ID- BSMMU , Password- bsmmu <br>
