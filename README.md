@@ -3,9 +3,9 @@ this is a Centralized patient management and prescription writing web applicatio
 
 Here are some screenshots of the application <br>
 test credentials: <br>
-Hospital : ID-BSMMU , Password-bsmmu <br>
-Doctor : ID-dr@test.com , Password-doctor123 <br>
-Patient : ID-patient@test.com , Password-patient123 <br>
+Hospital : ID- BSMMU , Password- bsmmu <br>
+Doctor : ID- dr@test.com , Password- doctor123 <br>
+Patient : ID- patient@test.com , Password- patient123 <br>
 <br>
 ![image](https://user-images.githubusercontent.com/45464612/194613414-02b99e9b-640e-442e-9486-fe0d1634a88c.png)
 <br>
