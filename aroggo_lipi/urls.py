@@ -19,6 +19,10 @@ from doctors import views as doctor_views
 from patients import views as patients_views
 from healthcare import views as healthcare_views
 
+from django.conf.urls.static import static
+from  django.views.static import serve
+from  django.conf import settings
+
 urlpatterns = [
     path('admin/', admin.site.urls, name='adminPanel'),
     path('', patients_views.userLoginPage, name='userLoginPage'),
@@ -91,3 +95,5 @@ urlpatterns = [
          doctor_views.editPatientMedicine, name='editPatientMedicine'),
 
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
